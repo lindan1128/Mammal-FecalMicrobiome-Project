@@ -1,0 +1,56 @@
+sed -i '' -E 's/[[:space:]]+$//' arc.txt 
+awk  '{print "prefetch "$0""}' arc.txt | sh
+awk  '{print "fasterq-dump "$0" --split-files -O ./"}' arc.txt | sh
+
+python generate_manifest_pair.py
+
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path manifest.csv \
+  --output-path paired-end-demux.qza \
+  --input-format PairedEndFastqManifestPhred33
+
+qiime cutadapt trim-paired \
+  --i-demultiplexed-sequences paired-end-demux.qza \
+  --p-front-f ACTCCTACGGGAGGCAGCAG \
+  --p-front-r GGACTACHVGGGTWTCTAAT \
+  --o-trimmed-sequences paired-end-demux-trimmed.qza
+
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs paired-end-demux-trimmed.qza \
+  --p-trunc-len-f 0 \
+  --p-trunc-len-r 0 \
+  --o-table table.qza \
+  --o-representative-sequences rep-seqs.qza \
+  --o-denoising-stats denoising-stats.qza
+
+qiime feature-classifier classify-sklearn \
+  --i-classifier silva-138-99-nb-classifier.qza \
+  --i-reads rep-seqs.qza \
+  --o-classification taxonomy.qza
+
+qiime taxa filter-table \
+  --i-table table.qza \
+  --i-taxonomy taxonomy.qza \
+  --p-exclude mitochondria,chloroplast \
+  --o-filtered-table table-filtered.qza
+
+qiime taxa collapse \
+  --i-table table-filtered.qza \
+  --i-taxonomy taxonomy.qza \
+  --p-level 6 \
+  --o-collapsed-table table-genus.qza
+
+qiime feature-table relative-frequency \
+  --i-table table-genus.qza \
+  --o-relative-frequency-table table-genus-rel.qza
+
+qiime tools export \
+  --input-path table-genus-rel.qza \
+  --output-path exported-table
+
+biom convert \
+  -i exported-table/feature-table.biom \
+  -o exported-table/feature-table.tsv \
+  --to-tsv
+

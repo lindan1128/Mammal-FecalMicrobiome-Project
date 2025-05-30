@@ -1,0 +1,15 @@
+sed -i '' -E 's/[[:space:]]+$//' arc.txt 
+awk  '{print "prefetch "$0""}' arc.txt | sh
+awk  '{print "fasterq-dump "$0" --split-files -O ./"}' arc.txt | sh
+
+bwa index GCA_002263795.4_ARS-UCD2.0_genomic.fna
+ls *_1.fastq | awk -F'_' '{print "bwa  mem -t 35 -R \"@RG\\tID:IDa\\tPU:81MMNABXX\\tSM:exomeSM\\tPL:Illumina\" -T 100 GCA_002263795.4_ARS-UCD2.0_genomic.fna "$0" "$1"_2.fastq > "$1".sam"}'| sh
+ls *sam | awk '{print "perl sam_identity.pl "$1" > "$1".identity "}' | sh
+ls *sam.identity | awk '{print "awk \x27$2>0.94 {print $1}\x27 "$1" > "$1".0.95"}' | sh
+
+ls *_1.fastq | awk -F'_' '{print "perl fiter_seq_from_fq_according_2_list.pl "$0" "$1".sam.identity.0.95 > "$1"_1.fq"}' | sh
+ls *_2.fastq | awk -F'_' '{print "perl fiter_seq_from_fq_according_2_list.pl "$0" "$1".sam.identity.0.95 > "$1"_2.fq"}' | sh
+
+ls SRR*_1.fq | awk -F'_' '{print "metaphlan "$1"_1.fq,"$1"_2.fq --bowtie2db /home/lin/MetaPhlAn/metaphlan/metaphlan_databases/ --nproc 10 --input_type fastq --bowtie2out "$1".bowtie2.bz2 > profiled_"$1".txt"}' | sh
+merge_metaphlan_tables.py profiled*.txt > merged_abundance_table.txt
+
