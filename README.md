@@ -11,6 +11,9 @@
     │   ├── lasso_prediction.r        # Lasso-based classification
     │   ├── alpha_diversity.r         # Alpha diversity
     │   ├── permanova.r               # PERMANOVA diversity
+	├── transfer_learning/            # Codes for transfer_learning
+	│   ├── transfer_learning_dnn.py  # transfer learning with three architectures for three models
+	│   ├── transfer_learning_dnn_permutation.py  # permutation test
    	├── 16s/                         # Codes for 16s data processing for each study 
    	├── mgs/                         # Codes for mgs data processing (assembly-free)
    	├── microbiomeHD/                # Human validation datasets extracted from microbiomeHD 
