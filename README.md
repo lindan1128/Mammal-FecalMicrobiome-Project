@@ -6,7 +6,8 @@
 	Main/
 	├── scripts/                      # Codes for analysis 
 	│   ├── diversity.r    # alpha & beta diversity 
-	│   ├── differential_microbes.r      # differential genera identification	│   ├── differential_microbes_batch_corrected.r       # differential genera identification with MMUPHin and limma correction
+	│   ├── differential_microbes.r      # differential genera identification	
+ 	│   ├── differential_microbes_batch_corrected.r       # differential genera identification with MMUPHin and limma correction
 	│ 	├── maaslin2.r                # MaasLin2 analysis
     │ 	├── aldex2.r           # Aldex2 analysis
     │ 	├── ancombc2.r        # AncomBC2 analysis
