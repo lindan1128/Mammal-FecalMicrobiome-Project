@@ -3,20 +3,20 @@
 ### Project structure
 	Main/
 	├── scripts/                      # Codes for analysis 
-	│   ├── otu_batch_correction.r    # Covariates controlling 
-	│   ├── host_specific_cooccurrence_network.r      # Host-specific co-occurrence network construction
-	│   ├── bootstrapped_cooccurrence_network.r       # Bootstrapped co-occurrence network construction
-	│   ├── maaslin2.r                # Association analysis
-    │   ├── rf_prediction.r           # Random forest-based classification
-    │   ├── lasso_prediction.r        # Lasso-based classification
-    │   ├── alpha_diversity.r         # Alpha diversity
-    │   ├── permanova.r               # PERMANOVA diversity
+	│   ├── diversity.r               # alpha & beta diversity 
+	│   ├── differential_microbes.r      # differential genera identification	
+    │   ├── differential_microbes_batch_corrected.r       # differential genera identification with MMUPHin and limma correction
+	│ 	├── maaslin2.r                # MaasLin2 analysis
+    │ 	├── aldex2.r                  # Aldex2 analysis
+    │ 	├── ancombc2.r                # AncomBC2 analysis
+    │ 	├── netmoss2.r                # Netmoss2 analysis
+    │ 	├── random_forest.r           # random forest modeling
+    │ 	├── lasso.r                   # lasso regression modeling
+    │ 	├── network.r                 # neural network modeling
 	├── transfer_learning/            # Codes for transfer_learning
-	│   ├── transfer_learning_dnn.py  # transfer learning with three architectures for three models
-	│   ├── transfer_learning_dnn_permutation.py  # permutation test
-   	├── 16s/                         # Codes for 16s data processing for each study 
-   	├── mgs/                         # Codes for mgs data processing (assembly-free)
-   	├── microbiomeHD/                # Human validation datasets extracted from microbiomeHD 
+	│   ├── transfer_single_source.py  # transfer learning with single source study
+	│   ├── transfer_multiple_sources.py  # transfer learning with multiple source studies
+   	├── data_process/                         # Codes for 16s data, WGS data  processing for each study 
 	├── Supplemental_Table/          # Folder for supplemental tables
 	├── Supplemental_Figure/         # Folder for supplemental figures
 	├── README.md                    # Readme file
