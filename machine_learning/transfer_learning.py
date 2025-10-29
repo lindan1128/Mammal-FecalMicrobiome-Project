@@ -1163,7 +1163,7 @@ def nn_cv_pretrain(data, labels, batch_labels=None, pretrain_data=None,
                     print(f"      Step 3: Fine-tuning all layers...")
                     model = fine_tune_all_layers(
                         model, X_train_train, y_train_train, X_val, y_val,
-                        train_train_weights, val_weights, epochs=100, lr=0.001
+                        train_train_weights, val_weights, epochs=100, lr=0.0001
                     )
                     final_auc, final_acc, final_rec, final_f1, final_fpr = (
                         evaluate_model(model, X_test, y_test)
